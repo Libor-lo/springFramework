@@ -59,6 +59,12 @@ final class PostProcessorRegistrationDelegate {
 		// Invoke BeanDefinitionRegistryPostProcessors first, if any.
 		Set<String> processedBeans = new HashSet<>();
 
+		/*
+		-- 上下文先传递过来的beanFactoryPostProcessors处理beanfactory
+			beanFactory如果是beanDefinitionRegistry，先找出beanDefinitionRegistryPostProcessor处理beanfactory
+		-- beanfactory找出所有beanFactoryPostProcessors并应用
+		-- 所有processors按PriorityOrdered,Ordered, and the rest处理
+		*/
 		if (beanFactory instanceof BeanDefinitionRegistry) {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();

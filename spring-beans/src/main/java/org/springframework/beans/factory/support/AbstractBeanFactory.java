@@ -291,6 +291,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			if (!typeCheckOnly) {
+				//把beanname添加到alreadyCreated集合中，并把mergedBeanDefinition中对应的stale（不新鲜的）标识为true
 				markBeanAsCreated(beanName);
 			}
 

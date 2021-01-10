@@ -527,6 +527,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
+				//ApplicationContext不做处理
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
@@ -598,6 +599,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Initialize any placeholder property sources in the context environment.
+		//在上下文环境中初始化任何占位符属性源。
 		initPropertySources();
 
 		// Validate that all properties marked as required are resolvable:
