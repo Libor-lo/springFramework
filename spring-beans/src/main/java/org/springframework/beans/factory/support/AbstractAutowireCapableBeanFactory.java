@@ -502,6 +502,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		try {
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
+			//实例化之前对InstantiationAwareBeanPostProcessor的回调，可自己自定义实例化过程，例如返回bean的代理对象
 			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
 			if (bean != null) {
 				return bean;
@@ -544,6 +545,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * @see #instantiateUsingFactoryMethod
 	 * @see #autowireConstructor
 	 */
+	//Spring在创建Bean的过程中分为三步
+	//实例化，对应方法：AbstractAutowireCapableBeanFactory中的createBeanInstance方法
+	//属性注入，对应方法：AbstractAutowireCapableBeanFactory的populateBean方法
+	//初始化，对应方法：AbstractAutowireCapableBeanFactory的initializeBean
 	protected Object doCreateBean(String beanName, RootBeanDefinition mbd, @Nullable Object[] args)
 			throws BeanCreationException {
 

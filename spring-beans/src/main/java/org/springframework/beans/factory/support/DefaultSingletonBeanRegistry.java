@@ -75,12 +75,15 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 
 	/** Cache of singleton objects: bean name to bean instance. */
+	//一级缓存：单例池，存放成品bean
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
 
 	/** Cache of singleton factories: bean name to ObjectFactory. */
+	//三级缓存：实例化bean对象的工厂bObjectFactory.getObject，一般使用lambda来传递方法，即在三级缓存中存放的不是bean，只是当有需要才调用方法返回一个bean实例
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
 
 	/** Cache of early singleton objects: bean name to bean instance. */
+	//二级缓存：完成实例化，但是还未进行属性注入及初始化的对象，二级缓存中存储的就是从三级缓存的bean工厂中获取到的对象
 	private final Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<>(16);
 
 	/** Set of registered singletons, containing the bean names in registration order. */
@@ -178,6 +181,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	@Nullable
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
+		//从三级缓存中取bean：singletonObjects > earlySingletonObjects > singletonFactories
+		//1.先不上锁快速查找，当从一级缓存取不到bean且当前正处于当前bean的创建过程中，从二级缓存查找
+		//2.若二级缓存查找不到且允许提前引用，加锁并从三级缓存一层一层重新查找bean，如若在singletonFactories找到则把bean移动到二级缓存
 		// Quick check for existing instance without full singleton lock
 		Object singletonObject = this.singletonObjects.get(beanName);
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {

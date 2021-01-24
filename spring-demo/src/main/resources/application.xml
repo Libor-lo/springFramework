@@ -7,9 +7,19 @@
 		<property name="name" value="Java"/>
 	</bean>
 
-	<bean id="MyBeanFactoryProcessor" class="org.springframework.processor.MyBeanFactoryProcessor"></bean>
+	<bean id="myBeanFactoryProcessor" class="org.springframework.processor.MyBeanFactoryProcessor"/>
 
-	<bean id="MyBeanProcessor" class="org.springframework.processor.MyBeanProcessor"></bean>
+	<bean id="myBeanProcessor" class="org.springframework.processor.MyBeanProcessor"/>
+
+	<bean id="circularReferenceA" class="org.springframework.bo.CircularReferenceA">
+		<property name="name" value="A"/>
+		<property name="b" ref="circularReferenceB"/>
+	</bean>
+
+	<bean id="circularReferenceB" class="org.springframework.bo.CircularReferenceB">
+		<property name="name" value="B"/>
+		<property name="a" ref="circularReferenceA"/>
+	</bean>
 
 
 </beans>
